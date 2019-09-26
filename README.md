@@ -171,3 +171,5 @@ Al cargar tensorflow, aparecen algunas adevertencias pero no comprometen nuestro
 
 Y cambie en la línea `retrained_graph.pb` por `retrained_graph_224_025.pb`, aquí estamos cargando un modelo más liviano que requiere menos recursos de procesamiento. En la [documentación](https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet_v1.md "documentación") de MobileNet se listan las variantes que s epueden utilizar.
 
+También puede explorar [Tensorflow lite](https://www.tensorflow.org/lite/guide/build_rpi "Tensorflow lite") que genera modelos más livianos aún, dando mejores tiempos para hacer inferencia sobre las imágenes.
+
