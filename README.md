@@ -66,7 +66,7 @@ Compruebe que ha quedado bien instalado con:
 
 `python`
 
-`>>> import PiRGBArray`
+`>>> from picamera.array import PiRGBArray`
 
 ### Instalación de Tensorflow
 
