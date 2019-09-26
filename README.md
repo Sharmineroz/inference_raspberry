@@ -163,8 +163,11 @@ Activamos el entorno virtual y corremos el código de inferencia:
 
 `python video_inference.py`
 
+![](https://raw.githubusercontent.com/Sharmineroz/inference_raspberry/master/2019-09-25-212247_800x480_scrot.png?token=AEFSCRNCJV64VTGL7CZAYWC5RQTGG)
+
 Al cargar tensorflow, aparecen algunas adevertencias pero no comprometen nuestro código. El tiempo que le toma a la tarjeta hacer inferencia puede ser bastante largo dependiendo de la aplicación en que la vaya a utilizar, esto se debe al peso del modelo, por lo que puede cambiar a un modelo más liviano. Para ello abra el código video_inference.py:
 
 `nano video_inference.py`
 
 Y cambie en la línea `retrained_graph.pb` por `retrained_graph_224_025.pb`, aquí estamos cargando un modelo más liviano que requiere menos recursos de procesamiento. En la [documentación](https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet_v1.md "documentación") de MobileNet se listan las variantes que s epueden utilizar.
+
