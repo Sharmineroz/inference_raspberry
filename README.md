@@ -33,8 +33,10 @@ En la ventana emergente, entre con el usuario `pi` y la clave que le haya puesto
 Ahora nos cambiamos al escritorio, creamos una carpeta en la que vamos a alojar el el proyecto y nos situamos en esa carpeta: 
 
 `cd Desktop`
-`mkdir inferencia`
-`cd inferencia`
+
+`git clone https://github.com/Sharmineroz/inference_raspberry.git`
+
+`cd inference_raspberry`
 
 Actualizamos a la versión más reciente de python:
 
@@ -43,7 +45,9 @@ Actualizamos a la versión más reciente de python:
 Ahora vamos a descargar virtualenv para crear un entorno virtual en el que vamos a guardar las librerías necesarias para el proyecto. 
 
 `sudo apt install virtualenv python3-virtualenv -y`
+
 `virtualenv -p /usr/bin/python3 tf`
+
 `source tf/bin/activate`
 
 ### Configuración de picamera 
@@ -61,6 +65,7 @@ Posteriormente, instalamos la librería de manejo de los datos de la cámara par
 Compruebe que ha quedado bien instalado con:
 
 `python`
+
 `>>> import PiRGBArray`
 
 ### Instalación de Tensorflow
@@ -68,12 +73,15 @@ Compruebe que ha quedado bien instalado con:
 Ahora vamos a instalar tensorflow, para ello, primero instalamos un paquete necesario para que funcione en nuestra tarjeta y luego sí colocamos ensorflow en nuestro entorno virtual:
 
 `sudo apt install libatlas3-base`
+
 `pip3 install tensorflow`
 
 Ahora comprobamos que ha quedado bien instalado:
 
 `python`
+
 `>>> import tensorflow as tf`
+
 `>>> tf.__version__`
 
 ### Instalación de OpenCV
@@ -86,7 +94,9 @@ Vamos a instalar los paquetes necesarios para hacer funcionar OpenCV en nustra t
 Ahora comprobamos si OpenCV quedó bien instalado:
 
 `python`
+
 `>>> import cv2`
+
 `>>> cv2.__version__`
 
 Si le sale algo como lo de la imágen de abajo, entonces vamos a instalar los paquetes necesarios para que funcione: 
@@ -96,6 +106,7 @@ Si le sale algo como lo de la imágen de abajo, entonces vamos a instalar los pa
 Cámbiese al siguiente directorio y busque un archivo de extensión .so:
 
 `cd /usr/local/lib/python3.7/dist-packages/cv2`
+
 `ls`
 
 En mi caso l archivo tenía nombre `cv2.cpython-37m-arm-linux-gnueabihf.so`, entonces corro `ldd` sobre ese archivo:
@@ -109,6 +120,7 @@ Como respuesta usted va a ver en pantalla un montón de archivos con extensión 
 Para buscar en instalar los paquetes que faltan, vamos a instalar la herramienta `apt-file` y la actualizamos:
 
 `sudo apt install apt-file`
+
 `sudo apt-file update`
 
 suponga que de los paquetes no encontrados hubo uno llamado `libhdf5_serial.so.100`, entonces busca su ubicación o la de un sustituto así:
@@ -118,6 +130,7 @@ suponga que de los paquetes no encontrados hubo uno llamado `libhdf5_serial.so.1
 A lo que va a obtener una respuesta similar a:
 
 `libhdf5-100: /usr/lib/arm-linux-gnueabihf/libhdf5_serial.so.100`
+
 `libhdf5-100: /usr/lib/arm-linux-gnueabihf/libhdf5_serial.so.100.0.1`
 
 E instale alguno de los paquetes que aparecen antes de los dos puntos ":" de la siguiente manera:
@@ -132,3 +145,26 @@ Ahora vuelva a instalar OpenCV:
 
 Ahora vuelva a comprobar si OpenCV ha quedado bien instalado.
 
+### Ahora sí, manos a la obra!
+
+Vamos a comprobar que la cámara funciona corrrectamente con python, **desde aquí ya dejamos de usar la conexión SSH y trabajamos directo en la raspberry**:
+
+`cd ~/Desktop/inference_raspberry`
+
+`python video_test.py`
+
+Debería estar viendo en una ventana el video capturado por la cámara conectada en la raspberry, para cerrar la ventana, presione "q".
+
+Ahora vamos a probar la inferencia con tensorflow sobre un modelo re-entrenado, [aquí](https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/#0 "aquí") hay un tutorial sobre cómo entrenar un modelo para tus propias imágenes.
+
+Activamos el entorno virtual y corremos el código de inferencia:
+
+`source tf/bin/activate`
+
+`python video_inference.py`
+
+Al cargar tensorflow, aparecen algunas adevertencias pero no comprometen nuestro código. El tiempo que le toma a la tarjeta hacer inferencia puede ser bastante largo dependiendo de la aplicación en que la vaya a utilizar, esto se debe al peso del modelo, por lo que puede cambiar a un modelo más liviano. Para ello abra el código video_inference.py:
+
+`nano video_inference.py`
+
+Y cambie en la línea `retrained_graph.pb` por `retrained_graph_224_025.pb`, aquí estamos cargando un modelo más liviano que requiere menos recursos de procesamiento. En la [documentación](https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet_v1.md "documentación") de MobileNet se listan las variantes que s epueden utilizar.
