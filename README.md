@@ -28,7 +28,7 @@ Para conectarse a la raspberry desde su pc, use el programa [putty](https://the.
 
 En la ventana emergente, entre con el usuario `pi` y la clave que le haya puesto a su tarjeta (por defecto es `raspberry`). Con esto ya está establecida la conexión SSH. 
 
-### Configuración de entorno virtual (opcional)
+### Configuración de entorno virtual
 
 Ahora nos cambiamos al escritorio, creamos una carpeta en la que vamos a alojar el el proyecto y nos situamos en esa carpeta: 
 
